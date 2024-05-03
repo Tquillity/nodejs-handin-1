@@ -5,23 +5,23 @@
 export default class Block {
   /**
    * 
+   * @param {number} timestamp - The timestamp when the block was created. 
    * @param {number} index - The index of the block in the blockchain.
-   * @param {string} hash  - The hash of the current Block.
-   * @param {string} previousHash - The has of the previous block.
-   * @param {number} timestamp - The timestamp when the block was created.
-   * @param {*} data - The data stored in the block, for this project a "Complex Object".
+   * @param {string} currentHash  - The hash of the current Block.
+   * @param {string} previousHash - The hash of the previous block.
+   * @param {Object} data - The data stored in the block, for this project a "Complex Object".
    */
   constructor(
-    index,
-    hash,
-    previousHash,
     timestamp,
+    index,
+    currentHash,
+    previousHash,
     data
   ) {
-    this.index = index;
-    this.hash = hash;
-    this.previousHash = previousHash;
     this.timestamp = timestamp;
+    this.index = index;
+    this.currentHash = currentHash;
+    this.previousHash = previousHash;
     this.data = data;
   }
 }
