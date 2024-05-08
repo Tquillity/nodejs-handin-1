@@ -10,18 +10,24 @@ export default class Block {
    * @param {string} currentHash  - The hash of the current Block.
    * @param {string} previousHash - The hash of the previous block.
    * @param {Object} data - The data stored in the block, for this project a "Complex Object".
+   * @param {number} nonce - The nonce value of the block.
+   * @param {number} difficulty - The difficulty of the block.
    */
   constructor(
     timestamp,
     index,
     currentHash,
     previousHash,
-    data
+    data,
+    nonce,
+    difficulty
   ) {
     this.timestamp = timestamp;
     this.index = index;
     this.currentHash = currentHash;
     this.previousHash = previousHash;
     this.data = data;
+    this.nonce = nonce;
+    this.difficulty = difficulty;
   }
 }
