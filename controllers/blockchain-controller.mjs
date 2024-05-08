@@ -8,19 +8,24 @@ const getBlockchain = (req, res, next) => {
 const createBlock = (req, res, next) => {
   const lastBlock = blockchain.getLastBlock();
   const data = req.body;
-  const timestamp = Date.now();
-
-  const currentHash = blockchain.hashBlock(
-    timestamp,
+  const { nonce, difficulty, timestamp } =blockchain.proofOfWork(
     lastBlock.currentHash,
     data
   );
 
-  const newBlock = blockchain.createBlock(
+  const currentHash = blockchain.hashBlock(
     timestamp,
     lastBlock.currentHash,
-    currentHash,
-    data
+    data,
+    nonce,
+    difficulty
+  );
+
+  const newBlock = blockchain.createBlock(
+    lastBlock.currentHash,
+    data,
+    nonce,
+    difficulty,
   );
 
   res.status(201).json({ success: true, data: newBlock });

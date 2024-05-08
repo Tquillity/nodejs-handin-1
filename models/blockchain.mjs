@@ -94,6 +94,39 @@ export default class Blockchain {
     return hash;
   };
 
+  proofOfWork(previousHash, data) {
+    const lastBlock = this.getLastBlock();
+    let nonce = 0, hash, timestamp;;
+    let difficulty = lastBlock.difficulty;
+    
+
+    do {
+      nonce++;
+      timestamp = Date.now();
+
+      difficulty = this.difficultyAdjustment(lastBlock, timestamp);
+      hash = this.hashBlock(
+        timestamp,
+        previousHash,
+        data,
+        nonce,
+        difficulty
+      );
+    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
+
+    return {nonce, difficulty, timestamp};
+  }
+
+  difficultyAdjustment(lastBlock, timestamp) {
+    const MINE_RATE = parseInt(process.env.MINE_RATE, 10);
+    if (timestamp - lastBlock.timestamp < MINE_RATE) {
+      return lastBlock.difficulty + 1;
+    } else {     
+      return Math.max(lastBlock.difficulty - 1, 1);
+    }
+  }
+  
+
   /**
    * Validates the integrity of the entire blockchain by checking each block's hash,
    * and the links to its previous block.
