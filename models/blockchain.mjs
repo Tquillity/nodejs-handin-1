@@ -11,29 +11,57 @@ export default class Blockchain {
    */
   constructor() {
     this.chain = [];
-
     this.peerNodes = [];
-
     this.nodeUrl = process.argv[3];
+    this.createGenesisBlock();
+  }
 
-    this.createBlock(Date.now(), '0', '0', []);
+  /**
+   * Creates the genesis block and adds it to the blockchain.
+   */
+  createGenesisBlock() {
+    const timestamp = Date.now();
+    const index = 0;
+    const previousHash = '0'; 
+    const data = [];
+    const nonce = 1337;
+    const difficulty = 2;
+    
+    const currentHash = this.hashBlock(timestamp, previousHash, data, nonce, difficulty);
+
+    const genesisBlock = new Block(
+      timestamp,
+      index,
+      currentHash,
+      previousHash,
+      data,
+      nonce,
+      difficulty
+    );
+    
+    this.chain.push(genesisBlock);
+    
   }
 
   /**
    * Creates a new block, adds it to the blockchain, and returns the block.
-   * @param {number} timestamp - The timestamp when the block was created.
    * @param {string} previousHash - The hash of the previous block.
-   * @param {string} currentHash - The hash of the current block.
    * @param {Object} data - The data to be stored in the block.
+   * @param {number} nonce - The nonce value of the block.
+   * @param {number} difficulty - The difficulty of the block.
    * @returns {Block} - The newly created block.
    */
-  createBlock(timestamp, previousHash, currentHash, data){
+  createBlock(previousHash, data, nonce, difficulty){
+    const timestamp = Date.now();
+    const currentHash = this.hashBlock(timestamp, previousHash, data, nonce, difficulty);
     const block = new Block(
       timestamp,
-      this.chain.length + 1,
-      previousHash,
+      this.chain.length,
       currentHash,
-      data
+      previousHash,
+      data,
+      nonce,
+      difficulty
     );
 
     this.chain.push(block);
@@ -55,10 +83,12 @@ export default class Blockchain {
    * @param {Number} timestamp - The timestamp when the block was created.
    * @param {String} previousHash - The hash of the previous block.
    * @param {Object[]} blockData - The data of the block to hash.
+   * @param {Number} nonce - The nonce value of the block.
+   * @param {Number} difficulty - The difficulty of the block.
    * @returns {String} - The resulting hash in hexadecimal format.
    */
-  hashBlock(timestamp, previousHash, blockData) {
-    const stringToHash = `${timestamp}${previousHash}${JSON.stringify(blockData)}`;
+  hashBlock(timestamp, previousHash, blockData, nonce, difficulty) {
+    const stringToHash = `${timestamp}${previousHash}${JSON.stringify(blockData)}${nonce}${difficulty}`;
     const hash = createHash(stringToHash);
 
     return hash;
@@ -76,16 +106,20 @@ export default class Blockchain {
     for (let i = 1; i < blockchain.length; i++) {
       const block = blockchain[i];
       console.log(block);
-      const previousBlock = blockchain[i - 1];
 
+      const previousBlock = blockchain[i - 1];
       const hashValidation = this.hashBlock(
         block.timestamp,
         block.previousHash,
-        block.data
+        block.data,
+        block.nonce,
+        block.difficulty
       );
 
-      if (hashValidation !== block.currentHash) isValid = false;
-      if (block.previousHash !== previousBlock.currentHash) isValid = false;
+      if (hashValidation !== block.currentHash || block.previousHash !== previousBlock.currentHash) {
+        isValid = false;
+        break;  
+      }
     }
 
     return isValid;
