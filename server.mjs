@@ -1,5 +1,7 @@
 import express from 'express';
+import cors from 'cors';
 import blockchainRouter from './routes/blockchain-routes.mjs';
+import transactionRouter from './routes/transaction-routes.mjs';
 import memberRouter from './routes/member-routes.mjs';
 
 /**
@@ -15,11 +17,15 @@ const PORT = process.argv[2];
  */
 const app = express();
 
+// Use CORS all doors open...
+app.use(cors());
+
 // Middleware...
 app.use(express.json());
 
 // Definierar endpoints...
 app.use('/api/v1/blockchain', blockchainRouter);
+app.use('/api/v1/transactions', transactionRouter);
 app.use('/api/v1/members', memberRouter);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
