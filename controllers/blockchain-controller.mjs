@@ -7,7 +7,7 @@ const getBlockchain = (req, res, next) => {
 
 const createBlock = (req, res, next) => {
   const lastBlock = blockchain.getLastBlock();
-  const data = req.body;
+  const data = blockchain.pendingTransactions;
   const { nonce, difficulty, timestamp } =blockchain.proofOfWork(
     lastBlock.currentHash,
     data
@@ -22,14 +22,47 @@ const createBlock = (req, res, next) => {
   );
 
   const newBlock = blockchain.createBlock(
+    timestamp,
     lastBlock.currentHash,
+    currentHash,
     data,
     nonce,
     difficulty,
   );
 
-  res.status(201).json({ success: true, data: newBlock });
+  res.status(201).json({
+    success: true,
+    statusCode: 201,
+    data: newBlock
+  });
 };
+
+const updateChain = (req, res, next) => {
+  const block = req.body.block;
+  const lastBlock = blockchain.getLastBlock();
+  const hash = lastBlock.currentHash === block.previousHash;
+  const index = lastBlock.blockIndex + 1 === block.blockIndex;
+
+  if (hash && index) {
+    blockchain.chain.push(block);
+    blockchain.pendingTransactions = [];
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      data: {
+        message: 'Block is added and sent to peers',
+        block: block,
+      },
+    });
+  } else {
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      data: { message: 'Block is rejected, invalid', block },
+    });
+  }
+};
+
 
 const syncBlockchain = (req, res, next) => {
 
@@ -66,4 +99,4 @@ const syncBlockchain = (req, res, next) => {
   });
 };
 
-export { createBlock, getBlockchain, syncBlockchain };
+export { createBlock, getBlockchain, syncBlockchain, updateChain };

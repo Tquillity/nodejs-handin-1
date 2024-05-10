@@ -1,5 +1,6 @@
 import { createHash } from '../utilities/crypto-lib.mjs';
 import Block from './block.mjs';
+import Transaction from './Transaction.mjs';
 
 /**
  * Represents the blockchain and manages the chain of blocks,
@@ -12,6 +13,7 @@ export default class Blockchain {
   constructor() {
     this.chain = [];
     this.peerNodes = [];
+    this.pendingTransactions = [];
     this.nodeUrl = process.argv[3];
     this.createGenesisBlock();
   }
@@ -64,10 +66,21 @@ export default class Blockchain {
       difficulty
     );
 
+    this.pendingTransactions = [];
     this.chain.push(block);
 
     return block;
   };
+
+
+  createTransaction(amount, sender, recipient) {
+    return new Transaction(amount, sender, recipient);
+  }
+
+  addTransaction(transaction) {
+    this.pendingTransactions.push(transaction);
+    return this.getLastBlock().blockIndex + 1;
+  }
 
   /**
    * Retreives the last block in the chain
