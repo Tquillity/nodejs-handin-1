@@ -17,7 +17,6 @@ export default class Blockchain {
     this.pendingTransactions = [];
     this.nodeUrl = process.argv[3];
     this.chain.push(createGenesisBlock());
-    console.log('genesis block', this.chain[0]);
   }
    
 

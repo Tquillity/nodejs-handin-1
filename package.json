@@ -6,7 +6,7 @@
   "scripts": {
     "node-1": "nodemon --env-file=config/config.env server.mjs 5001 http://localhost:5001",
     "node-2": "nodemon --env-file=config/config.env server.mjs 5002 http://localhost:5002",
-    "node-3": "nodemon --env-file=config/config.env server.mjs 5003 http://localhost:5003", 
+    "node-3": "nodemon --env-file=config/config.env server.mjs 5003 http://localhost:5003",
     "test": "vitest",
     "test:ui": "vitest --ui"
   },
@@ -15,7 +15,8 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "@vitest/ui": "^1.5.2",
