@@ -15,7 +15,10 @@ function logRequests(req, res, next) {
     if (chunk) chunks.push(Buffer.from(chunk));
     const body = Buffer.concat(chunks).toString('utf8');
 
-    logger.info(`${req.method} ${req.url} ${res.statusCode} - ${body}`);
+    if(res.statusCode >= 200 && res.statusCode < 300) {
+      logger.info(`${req.method} ${req.url} ${res.statusCode} - ${body}`);
+    }
+    
     oldEnd.apply(res, arguments);
   };
 
