@@ -1,6 +1,11 @@
-import {createLogger, format, transports} from 'winston';
+import { createLogger, format, transports } from 'winston';
+import path from 'path';
+import { fileURLToPath} from 'url';
 
-const { combine, timestamp, label, printf } = format;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const { combine, timestamp, printf } = format;
 
 const logFormat = printf(({level, message, timestamp}) => {
   return `${timestamp} ${level}: ${message}`;
@@ -12,9 +17,9 @@ const logger = createLogger({
     logFormat
   ),
   transports: [
-    new transports.File({ filename: 'combined.log' }),
-    new transports.File({ filename: 'error.log', level: 'error' }),
-    new transports.File({ filename: 'operations.log', level: 'info'})
+    new transports.File({ filename: path.join(__dirname, '../logs/combined.log') }),
+    new transports.File({ filename: path.join(__dirname, '../logs/error.log'), level: 'error' }),
+    new transports.File({ filename: path.join(__dirname, '../logs/operations.log'), level: 'info' })
   ]
 });
 
