@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": 1715541892376,
+    "index": 1,
+    "currentHash": "02254b057768912ef5f98f97a8b743273c3c10bfca0a21938f19db9490c36f41",
+    "previousHash": "0",
+    "data": [],
+    "nonce": 1337,
+    "difficulty": 2
+  },
+  {
+    "timestamp": 1715541907469,
+    "index": 2,
+    "currentHash": "0664557ef279206583de2130f33389e837cda2d79c0466fb7f1cd6fdef0fac97",
+    "previousHash": "02254b057768912ef5f98f97a8b743273c3c10bfca0a21938f19db9490c36f41",
+    "data": [],
+    "nonce": 21,
+    "difficulty": 1
+  },
+  {
+    "timestamp": 1715541941824,
+    "index": 3,
+    "currentHash": "0c2fafee27b1f15e86e3b9e293c9bca73690c73677792e6d24b35ce3dbb34093",
+    "previousHash": "0664557ef279206583de2130f33389e837cda2d79c0466fb7f1cd6fdef0fac97",
+    "data": [
+      {
+        "amount": 1,
+        "sender": "Mikael",
+        "recipient": "Angela",
+        "transactionId": "312bed64e74e4e319ddfcf908b697041"
+      },
+      {
+        "amount": 99,
+        "sender": "Mikael",
+        "recipient": "Angela",
+        "transactionId": "0b3a020fa564434198d512e592c1023d"
+      }
+    ],
+    "nonce": 3,
+    "difficulty": 1
+  }
+]

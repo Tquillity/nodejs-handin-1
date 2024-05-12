@@ -1,117 +1,96 @@
 import { blockchain } from '../startup.mjs';
+import { sendResponse, sendError } from '../middleware/responseHandler.mjs';
+import logger from '../utilities/logger.mjs';
+import { writeFileAsync, readFileAsync } from '../utilities/fileHandler.mjs';
 
-const getBlockchain = (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    statusCode: 200,
-    data: blockchain,
-  });
-};
-
-
-const createBlock = (req, res, next) => {
-  const lastBlock = blockchain.getLastBlock();
-  const data = blockchain.pendingTransactions;
-  const { nonce, difficulty, timestamp } = blockchain.proofOfWork(
-    lastBlock.currentHash,
-    data
-  );
-
-  const currentHash = blockchain.hashBlock(
-    timestamp,
-    lastBlock.currentHash,
-    data,
-    nonce,
-    difficulty
-  );
-
-   
-   const block = blockchain.createBlock(
-    lastBlock.currentHash,
-    data, 
-    nonce,
-    difficulty,
-    timestamp
-  );
-
-  blockchain.peerNodes.forEach(async (url) => {
-    const body = { block };
-    await fetch(`${url}/api/v1/blockchain/block/broadcast`, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  });
-
-  res.status(200).json({
-    success: true,
-    statusCode: 200,
-    data: { message: 'Block is created and sent to peers', block },
-  });
-};
-
-const updateChain = (req, res, next) => {
-  const block = req.body.block;
-  const lastBlock = blockchain.getLastBlock();
-  const hash = lastBlock.currentHash === block.previousHash;
-  const index = lastBlock.blockIndex + 1 === block.blockIndex;
-
-  if (hash && index) {
-    blockchain.chain.push(block);
-    blockchain.pendingTransactions = [];
-    res.status(201).json({
-      success: true,
-      statusCode: 201,
-      data: {
-        message: 'Block is added and sent to peers',
-        block: block,
-      },
-    });
-  } else {
-    res.status(500).json({
-      success: false,
-      statusCode: 500,
-      data: { message: 'Block is rejected, invalid', block },
-    });
+const getBlockchain = (req, res) => {
+  try {
+    sendResponse(res, 200, blockchain, 'Blockchain retrieved successfully.');
+  } catch (error) {
+    logger.error(`Failed to retrieve blockchain: ${error.message}`);
+    sendError(res, 500, 'Failed to retrieve blockchain.');
   }
 };
 
+const createBlock = async (req, res) => {
+  try {
+    const lastBlock = blockchain.getLastBlock();
+    const data = blockchain.pendingTransactions;
+    const { nonce, difficulty, timestamp } = blockchain.proofOfWork(lastBlock.currentHash, data);
+    const currentHash = blockchain.hashBlock(timestamp, lastBlock.currentHash, data, nonce, difficulty);
+    const block = blockchain.createBlock(lastBlock.currentHash, data, nonce, difficulty, timestamp);
 
-const syncBlockchain = (req, res, next) => {
+    await writeFileAsync('data', 'blockchain.json', JSON.stringify(blockchain.chain));
 
-  const currentLength = blockchain.chain.length;
-  let maxLength = currentLength;
-  let longestChain = null;
+    await Promise.all(blockchain.peerNodes.map(url => {
+      const body = { block };
+      return fetch(`${url}/api/v1/blockchain/block/broadcast`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {'Content-Type': 'application/json'},
+      });
+    }));
 
-  blockchain.peerNodes.forEach(async (member) => {
-    const response = await fetch(`${member}/api/v1/blockchain`);
-
-    if(response.ok) {
-      const result = await response.json();
-
-      if (result.data.chain.length > maxLength) {
-        maxLength = result.data.chain.length;
-        longestChain = result.data.chain;
-      }
-
-      if (
-        !longestChain ||
-        (longestChain && !blockchain.validateChain(longestChain))
-      ) {
-        console.log('The chain is invalid and syncronized');
-      } else {
-        blockchain.chain = longestChain;
-        console.log(blockchain);
-      }
-    } 
-  });
-  res.status(200).json({
-    success: true,
-    statusCode: 200,
-    data: {message: 'Syncronization complete'},
-  });
+    sendResponse(res, 200, { block }, 'Block is created and sent to peers');
+  } catch (error) {
+    logger.error(`Failed to create block: ${error.message}`);
+    sendError(res, 500, 'Failed to create block.');
+  }
 };
 
-export { createBlock, getBlockchain, syncBlockchain, updateChain };
+const loadBlockchain = async () => {
+  try {
+    const data = await readFileAsync('data', 'blockchain.json');
+    blockchain.chain = JSON.parse(data);
+  } catch (error) {
+    logger.error(`Failed to load blockchain: ${error.message}`);
+  }
+};
+
+const updateChain = (req, res) => {
+  try {
+    const block = req.body.block;
+    const lastBlock = blockchain.getLastBlock();
+    if (lastBlock.currentHash === block.previousHash && lastBlock.blockIndex + 1 === block.blockIndex) {
+      blockchain.chain.push(block);
+      blockchain.pendingTransactions = [];
+      sendResponse(res, 201, { block }, 'Block is added and sent to peers');
+    } else {
+      throw new Error('Block is rejected, invalid.');
+    }
+  } catch (error) {
+    logger.error(`Failed to update chain: ${error.message}`);
+    sendError(res, 500, error.message);
+  }
+};
+
+const syncBlockchain = async (req, res) => {
+  try {
+    const currentLength = blockchain.chain.length;
+    let maxLength = currentLength;
+    let longestChain = null;
+
+    const responses = await Promise.all(blockchain.peerNodes.map(member => fetch(`${member}/api/v1/blockchain`)));
+    responses.forEach(async (response, index) => {
+      if (response.ok) {
+        const result = await response.json();
+        if (result.data.chain.length > maxLength) {
+          maxLength = result.data.chain.length;
+          longestChain = result.data.chain;
+        }
+      }
+    });
+
+    if (longestChain && blockchain.validateChain(longestChain)) {
+      blockchain.chain = longestChain;
+      sendResponse(res, 200, { message: 'Synchronization complete' });
+    } else {
+      throw new Error('No valid chain found to sync.');
+    }
+  } catch (error) {
+    logger.error(`Failed to synchronize blockchain: ${error.message}`);
+    sendError(res, 500, 'Failed to synchronize blockchain.');
+  }
+};
+
+export { createBlock, getBlockchain, syncBlockchain, updateChain, loadBlockchain };

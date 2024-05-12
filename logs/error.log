@@ -1,6 +1,36 @@
-2024-05-12T18:06:04.163Z error: Failed to update chain: Block is rejected, invalid.
-2024-05-12T18:06:04.164Z error: Failed to update chain: Block is rejected, invalid.
-2024-05-12T18:07:09.152Z error: Failed to update chain: Block is rejected, invalid.
-2024-05-12T18:07:09.153Z error: Failed to update chain: Block is rejected, invalid.
-2024-05-12T18:07:13.468Z error: Failed to update chain: Block is rejected, invalid.
-2024-05-12T18:07:13.468Z error: Failed to update chain: Block is rejected, invalid.
+2024-05-12T18:19:28.838Z error: Failed to update chain: Block is rejected, invalid.
+2024-05-12T18:19:28.838Z error: Failed to update chain: Block is rejected, invalid.
+2024-05-12T18:22:31.359Z error: Failed to update chain: Block is rejected, invalid.
+2024-05-12T18:36:14.610Z error: Failed to update chain: Block is rejected, invalid.
+2024-05-12T18:36:29.212Z error: Failed to update chain: Block is rejected, invalid.
+2024-05-12T19:09:28.677Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:09:28.681Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:09:28.702Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:09:29.337Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:09:29.352Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:09:29.365Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:10:01.415Z error: Failed to create block: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:15:32.760Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:15:44.678Z error: Failed to create block: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:16:00.759Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:16:00.760Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:16:00.758Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:22:48.668Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:22:48.661Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:22:48.717Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:22:57.350Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:22:57.363Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:22:57.363Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:23:30.870Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:23:30.886Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:23:30.879Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:23:42.970Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:23:42.971Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:23:42.983Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:23:51.524Z error: Failed to create block: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:24:30.391Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:24:30.400Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:24:30.393Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:24:52.444Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:24:52.446Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'
+2024-05-12T19:24:52.474Z error: Failed to load blockchain: ENOENT: no such file or directory, open '/home/digislinger/DevArea/Node/inlämningsuppgifter/nodejs-handin-1/data/blockchain.json'

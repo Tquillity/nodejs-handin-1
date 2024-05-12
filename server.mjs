@@ -3,20 +3,19 @@ import cors from 'cors';
 import blockchainRouter from './routes/blockchain-routes.mjs';
 import transactionRouter from './routes/transaction-routes.mjs';
 import memberRouter from './routes/member-routes.mjs';
+import { loadBlockchain } from './controllers/blockchain-controller.mjs';
 import errorHandler from './middleware/errorHandler.mjs';
 import logRequests from './middleware/logRequests.mjs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-/**
- * The port on which the server will run, provided via command line arguments.
- * Script is setup in package.json for node-1 through node-3.
- * @type {number} - The port number.
- */
+
 const PORT = process.argv[2];
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
-/**
- * The main express application.
- * Used
- */
+global.__appdir = dirname;;
+
 const app = express();
 
 // Use CORS all doors open...
@@ -36,4 +35,7 @@ app.use('/api/v1/members', memberRouter);
 // Error handling middleware...
 app.use(errorHandler);
 
-app.listen(PORT, () => {console.log(`Server is running on port ${PORT}`);});
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  loadBlockchain();
+});

@@ -7,15 +7,15 @@ Applikationen ska byggas som ett REST API med endpoints för att kunna skapa blo
 
   [x] ~~Applikationen ska vara uppbyggd kring design mönstret MVC.~~
   [x] ~~Felhantering enligt “best practice” ska användas(det som vi gått igenom)~~
-  [] Blockkedjan ska skrivas till en json fil så att den finns även efter omstart av servern.
-  [] Loggning av fel ska skrivas till en fysisk fellogg
+  [x] ~~Blockkedjan ska skrivas till en json fil så att den finns även efter omstart av servern.~~
+  [x] ~~Loggning av fel ska skrivas till en fysisk fellogg~~
   [x] ~~ ES6 moduler ska användas istället för CommonJS moduler.~~
-  [] Skapandet av block ska ske test drivet(TDD)
-  [] Varje block måste verifieras och valideras(“Proof Of Work”)
+  [x]~~Skapandet av block ska ske test drivet(TDD)~~
+  [x] ~~Varje block måste verifieras och valideras(“Proof Of Work”)~~
 
  
 ## Väl godkänt krav:
 
-  [] För väl godkänt ska data i blocket vara av typen “complex object”, det vill säga antingen en instans av en klass eller ett anonymt objekt.
-  [] Centraliserad felhantering måste användas
-  [] Centraliserad loggning av applikationen måste användas
+  [x] ~~För väl godkänt ska data i blocket vara av typen “complex object”, det vill säga antingen en instans av en klass eller ett anonymt objekt.~~
+  [x] ~~Centraliserad felhantering måste användas~~
+  [x] ~~Centraliserad loggning av applikationen måste användas~~
