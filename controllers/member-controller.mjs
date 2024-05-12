@@ -1,51 +1,41 @@
 import { blockchain } from '../startup.mjs';
+import { sendResponse, sendError } from '../middleware/responseHandler.mjs';
+import logger from '../utilities/logger.mjs';
 
 export const listMembers = (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    statusCode: 200,
-    data: blockchain.peerNodes
-  });
+  sendResponse(res, 200, blockchain.peerNodes, 'List of peer nodes.');
 };
 
 export const registerMember = (req, res, next) => {
-  const node = req.body;
+  const nodeUrl = req.body.nodeUrl;
 
-  if (
-    blockchain.peerNodes.indexOf(node.nodeUrl) === -1 &&
-    blockchain.nodeUrl !== node.nodeUrl
-  ) {
-    blockchain.peerNodes.push(node.nodeUrl);
-
-    syncMembers(node.nodeUrl);
-
-    res.status(201).json({
-      success: true,
-      statusCode: 201,
-      data: {message: `Node ${node.nodeUrl} registered successfully.`},
-    });
-  } else {
-    res.status(400).json({
-      success: false,
-      statusCode: 400,
-      data: {message: `Node ${node.nodeUrl} already exists in the peer nodes list.`},
-    });
+  if (blockchain.nodeUrl === nodeUrl || blockchain.peerNodes.includes(nodeUrl)) {
+    logger.error(`Node ${nodeUrl} already exists or is the current node.`);
+    sendError(res, 400, `Node ${nodeUrl} already exists or is the current node.`);
+    return;
   }
+
+  blockchain.peerNodes.push(nodeUrl);
+  syncMembers(nodeUrl, blockchain.peerNodes, res);
 };
 
-const syncMembers = (url) => {
-  const members = [...blockchain.peerNodes, blockchain.nodeUrl];
-
+const syncMembers = async (newNodeUrl, existingNodes, res) => {
   try {
-    members.forEach(async (member) => {
-      const body = {nodeUrl: member};
-      await fetch(`${url}/api/v1/members/register-member`, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: {'Content-Type': 'application/json'},
-      });
+    const syncPromises = existingNodes.map(nodeUrl => {
+      if (nodeUrl !== newNodeUrl) {
+        const body = { nodeUrl: newNodeUrl };
+        return fetch(`${nodeUrl}/api/v1/members/register-member`, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {'Content-Type': 'application/json'},
+        });
+      }
     });
+
+    await Promise.all(syncPromises);
+    sendResponse(res, 201, {message: `Node ${newNodeUrl} registered successfully and synced with the network.`});
   } catch (error) {
-    console.error(error);
+    logger.error(`Error synchronizing members: ${error.message}`);
+    sendError(res, 500, 'Failed to synchronize members.');
   }
 };
