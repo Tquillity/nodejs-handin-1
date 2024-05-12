@@ -1,14 +1,18 @@
 import { blockchain } from '../startup.mjs';
 
 const getBlockchain = (req, res, next) => {
-  res.status(200).json({ success: true, data: blockchain });
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    data: blockchain,
+  });
 };
 
 
 const createBlock = (req, res, next) => {
   const lastBlock = blockchain.getLastBlock();
   const data = blockchain.pendingTransactions;
-  const { nonce, difficulty, timestamp } =blockchain.proofOfWork(
+  const { nonce, difficulty, timestamp } = blockchain.proofOfWork(
     lastBlock.currentHash,
     data
   );
@@ -21,19 +25,30 @@ const createBlock = (req, res, next) => {
     difficulty
   );
 
-  const newBlock = blockchain.createBlock(
-    timestamp,
+   
+   const block = blockchain.createBlock(
     lastBlock.currentHash,
-    currentHash,
-    data,
+    data, 
     nonce,
     difficulty,
+    timestamp
   );
 
-  res.status(201).json({
+  blockchain.peerNodes.forEach(async (url) => {
+    const body = { block };
+    await fetch(`${url}/api/v1/blockchain/block/broadcast`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  });
+
+  res.status(200).json({
     success: true,
-    statusCode: 201,
-    data: newBlock
+    statusCode: 200,
+    data: { message: 'Block is created and sent to peers', block },
   });
 };
 
