@@ -1,7 +1,11 @@
 import { blockchain } from '../startup.mjs';
 
 export const listMembers = (req, res, next) => {
-  res.status(200).json({ success: true, statusCode: 200, data: blockchain.peerNodes });
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    data: blockchain.peerNodes
+  });
 };
 
 export const registerMember = (req, res, next) => {

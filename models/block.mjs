@@ -28,6 +28,6 @@ export default class Block {
     this.previousHash = previousHash;
     this.data = data;
     this.nonce = nonce;
-    this.difficulty = difficulty || +process.env.DIFFICULTY;
+    this.difficulty = difficulty;
   }
 }

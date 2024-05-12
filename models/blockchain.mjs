@@ -1,4 +1,5 @@
 import { createHash } from '../utilities/crypto-lib.mjs';
+import { createGenesisBlock } from './genesisBlock.mjs';
 import Block from './block.mjs';
 import Transaction from './Transaction.mjs';
 
@@ -15,35 +16,11 @@ export default class Blockchain {
     this.peerNodes = [];
     this.pendingTransactions = [];
     this.nodeUrl = process.argv[3];
-    this.createGenesisBlock();
+    this.chain.push(createGenesisBlock());
+    console.log('genesis block', this.chain[0]);
   }
+   
 
-  /**
-   * Creates the genesis block and adds it to the blockchain.
-   */
-  createGenesisBlock() {
-    const timestamp = Date.now();
-    const index = 0;
-    const previousHash = '0'; 
-    const data = [];
-    const nonce = 1337;
-    const difficulty = 2;
-    
-    const currentHash = this.hashBlock(timestamp, previousHash, data, nonce, difficulty);
-
-    const genesisBlock = new Block(
-      timestamp,
-      index,
-      currentHash,
-      previousHash,
-      data,
-      nonce,
-      difficulty
-    );
-    
-    this.chain.push(genesisBlock);
-    
-  }
 
   /**
    * Creates a new block, adds it to the blockchain, and returns the block.
@@ -58,7 +35,7 @@ export default class Blockchain {
     const currentHash = this.hashBlock(timestamp, previousHash, data, nonce, difficulty);
     const block = new Block(
       timestamp,
-      this.chain.length,
+      this.chain.length + 1,
       currentHash,
       previousHash,
       data,
@@ -78,8 +55,13 @@ export default class Blockchain {
   }
 
   addTransaction(transaction) {
+    if(!this.chain.length) {
+      console.error('NO GENESIS BLOCK');
+      return null;
+    }
     this.pendingTransactions.push(transaction);
-    return this.getLastBlock().blockIndex + 1;
+    const lastBlock = this.getLastBlock();  
+    return lastBlock ? lastBlock.index + 1 : null;
   }
 
   /**

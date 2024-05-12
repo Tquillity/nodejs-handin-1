@@ -8,7 +8,10 @@ export const createTransaction = (req, res, next) => {
   res.status(201).json({
     success: true,
     statusCode:201,
-    data: { message: 'Transaction created', transaction, blockIndex },
+    data: {
+      message: 'Transaction created',
+      transaction,
+      blockIndex },
   });
 };
 
