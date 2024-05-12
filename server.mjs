@@ -4,6 +4,7 @@ import blockchainRouter from './routes/blockchain-routes.mjs';
 import transactionRouter from './routes/transaction-routes.mjs';
 import memberRouter from './routes/member-routes.mjs';
 import errorHandler from './middleware/errorHandler.mjs';
+import logRequests from './middleware/logRequests.mjs';
 
 /**
  * The port on which the server will run, provided via command line arguments.
@@ -23,6 +24,9 @@ app.use(cors());
 
 // Middleware...
 app.use(express.json());
+
+// logging middleware...
+app.use(logRequests);
 
 // Definierar endpoints...
 app.use('/api/v1/blockchain', blockchainRouter);
